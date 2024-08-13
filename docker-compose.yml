@@ -1,0 +1,96 @@
+version: '3.9'
+services:
+  mysql-master:
+    container_name: mysql-master
+    hostname: mysql-master
+    image: mysql:8.0.19
+    ports:
+      - 3306:3306
+    volumes:
+      - ./master/data:/var/lib/mysql
+      - ./master/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./master/init_db/:/docker-entrypoint-initdb.d/
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: test
+      character-set-server: utf8mb4
+      collation-server: utf8mb4_general_ci
+      default-authentication-plugin: mysql_native_password
+    restart: unless-stopped
+    privileged: true
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "--silent" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    networks:
+      basenetwork:
+        ipv4_address: 172.16.0.101
+
+  mysql-slave1:
+    container_name: mysql-slave1
+    hostname: mysql-slave1
+    image: mysql:8.0.19
+    ports:
+      - 3307:3306
+    volumes:
+      - ./slave01/data:/var/lib/mysql
+      - ./slave01/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./slave01/init_db/:/docker-entrypoint-initdb.d/
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: test
+      character-set-server: utf8mb4
+      collation-server: utf8mb4_general_ci
+      default-authentication-plugin: mysql_native_password
+    restart: unless-stopped
+    privileged: true
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "--silent" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    networks:
+      basenetwork:
+        ipv4_address: 172.16.0.102
+
+  mysql-slave2:
+    container_name: mysql-slave2
+    hostname: mysql-slave2
+    image: mysql:8.0.19
+    ports:
+      - 3308:3306
+    volumes:
+      - ./slave02/data:/var/lib/mysql
+      - ./slave02/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./slave02/init_db/:/docker-entrypoint-initdb.d/
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: test
+      character-set-server: utf8mb4
+      collation-server: utf8mb4_general_ci
+      default-authentication-plugin: mysql_native_password
+    restart: unless-stopped
+    privileged: true
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "--silent" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    networks:
+      basenetwork:
+        ipv4_address: 172.16.0.103
+
+networks:
+  basenetwork:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
