@@ -10,17 +10,17 @@
 
 1. 启动服务
 ```sh
-docker-compose -p master-slave up -d
+$ docker-compose -p master-slave up -d
 ```
 
 2. 进入mysql-master容器，创建远程账户。
 ```sh
-docker exec -it mysql-master bash
+$ docker exec -it mysql-master bash
 ```
 
 3. 连接mysql
 ```sh
-mysql -uroot -P3306 -p123456
+$ mysql -uroot -P3306 -p123456
 ```
 
 4. 创建账户
@@ -47,12 +47,12 @@ show master status;
 
 8. 进入从库容器
 ```sh
-docker exec -it mysql-slave1 bash
+$ docker exec -it mysql-slave1 bash
 ```
 
 9. 连接mysql
 ```sh
-mysql -uroot -P3307 -p123456
+$ mysql -uroot -P3307 -p123456
 ```
 
 10.  设置主从配置
@@ -76,12 +76,12 @@ show slave status \G;
 
 13.  进入从库容器
 ```sh
-docker exec -it mysql-slave2 bash
+$ docker exec -it mysql-slave2 bash
 ```
 
 14.  连接mysql
 ```sh
-mysql -uroot -P3308 -p123456
+$ mysql -uroot -P3308 -p123456
 ```
 
 15.  设置主从配置
